@@ -168,7 +168,7 @@ struct CompanionPanelView: View {
         } else if companionManager.hasCompletedOnboarding {
             // Permissions were revoked after onboarding — tell user to re-grant
             VStack(alignment: .leading, spacing: 6) {
-                Text("Permissions needed")
+                Text("権限の設定が必要です")
                     .font(.system(size: 12, weight: .bold))
                     .foregroundColor(DS.Colors.textSecondary)
 
@@ -306,7 +306,7 @@ struct CompanionPanelView: View {
                     .foregroundColor(isGranted ? DS.Colors.textTertiary : DS.Colors.warning)
                     .frame(width: 16)
 
-                Text("Accessibility")
+                Text("アクセシビリティ")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(DS.Colors.textSecondary)
             }
@@ -318,7 +318,7 @@ struct CompanionPanelView: View {
                     Circle()
                         .fill(DS.Colors.success)
                         .frame(width: 6, height: 6)
-                    Text("Granted")
+                    Text("許可済み")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(DS.Colors.success)
                 }
@@ -329,7 +329,7 @@ struct CompanionPanelView: View {
                         // on first attempt, then opens System Settings on subsequent attempts.
                         WindowPositionManager.requestAccessibilityPermission()
                     }) {
-                        Text("Grant")
+                        Text("許可する")
                             .font(.system(size: 11, weight: .semibold))
                             .foregroundColor(DS.Colors.textOnAccent)
                             .padding(.horizontal, 10)
@@ -349,7 +349,7 @@ struct CompanionPanelView: View {
                         WindowPositionManager.revealAppInFinder()
                         WindowPositionManager.openAccessibilitySettings()
                     }) {
-                        Text("Find App")
+                        Text("アプリを探す")
                             .font(.system(size: 11, weight: .semibold))
                             .foregroundColor(DS.Colors.textSecondary)
                             .padding(.horizontal, 10)
@@ -377,13 +377,13 @@ struct CompanionPanelView: View {
                     .frame(width: 16)
 
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("Screen Recording")
+                    Text("画面収録")
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(DS.Colors.textSecondary)
 
                     Text(isGranted
                          ? "Only takes a screenshot when you use the hotkey"
-                         : "Quit and reopen after granting")
+                         : "許可後にアプリを再起動してください")
                         .font(.system(size: 10))
                         .foregroundColor(DS.Colors.textTertiary)
                 }
@@ -396,7 +396,7 @@ struct CompanionPanelView: View {
                     Circle()
                         .fill(DS.Colors.success)
                         .frame(width: 6, height: 6)
-                    Text("Granted")
+                    Text("許可済み")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(DS.Colors.success)
                 }
@@ -407,7 +407,7 @@ struct CompanionPanelView: View {
                     // on subsequent attempts.
                     WindowPositionManager.requestScreenRecordingPermission()
                 }) {
-                    Text("Grant")
+                    Text("許可する")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(DS.Colors.textOnAccent)
                         .padding(.horizontal, 10)
@@ -433,7 +433,7 @@ struct CompanionPanelView: View {
                     .foregroundColor(isGranted ? DS.Colors.textTertiary : DS.Colors.warning)
                     .frame(width: 16)
 
-                Text("Screen Content")
+                Text("画面コンテンツ")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(DS.Colors.textSecondary)
             }
@@ -445,7 +445,7 @@ struct CompanionPanelView: View {
                     Circle()
                         .fill(DS.Colors.success)
                         .frame(width: 6, height: 6)
-                    Text("Granted")
+                    Text("許可済み")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(DS.Colors.success)
                 }
@@ -453,7 +453,7 @@ struct CompanionPanelView: View {
                 Button(action: {
                     companionManager.requestScreenContentPermission()
                 }) {
-                    Text("Grant")
+                    Text("許可する")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(DS.Colors.textOnAccent)
                         .padding(.horizontal, 10)
@@ -479,7 +479,7 @@ struct CompanionPanelView: View {
                     .foregroundColor(isGranted ? DS.Colors.textTertiary : DS.Colors.warning)
                     .frame(width: 16)
 
-                Text("Microphone")
+                Text("マイク")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(DS.Colors.textSecondary)
             }
@@ -491,7 +491,7 @@ struct CompanionPanelView: View {
                     Circle()
                         .fill(DS.Colors.success)
                         .frame(width: 6, height: 6)
-                    Text("Granted")
+                    Text("許可済み")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(DS.Colors.success)
                 }
@@ -508,7 +508,7 @@ struct CompanionPanelView: View {
                         }
                     }
                 }) {
-                    Text("Grant")
+                    Text("許可する")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(DS.Colors.textOnAccent)
                         .padding(.horizontal, 10)
@@ -550,7 +550,7 @@ struct CompanionPanelView: View {
                     Circle()
                         .fill(DS.Colors.success)
                         .frame(width: 6, height: 6)
-                    Text("Granted")
+                    Text("許可済み")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(DS.Colors.success)
                 }
@@ -560,7 +560,7 @@ struct CompanionPanelView: View {
                         NSWorkspace.shared.open(url)
                     }
                 }) {
-                    Text("Grant")
+                    Text("許可する")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(DS.Colors.textOnAccent)
                         .padding(.horizontal, 10)
@@ -881,7 +881,7 @@ struct CompanionPanelView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "play.circle")
                             .font(.system(size: 11, weight: .medium))
-                        Text("Watch Onboarding Again")
+                        Text("もう一度チュートリアルを見る")
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundColor(DS.Colors.textTertiary)
@@ -920,11 +920,11 @@ struct CompanionPanelView: View {
             return "セットアップ"
         }
         if !companionManager.isOverlayVisible {
-            return "Ready"
+            return "準備完了"
         }
         switch companionManager.voiceState {
         case .idle:
-            return "Active"
+            return "動作中"
         case .listening:
             return "Listening"
         case .processing:
