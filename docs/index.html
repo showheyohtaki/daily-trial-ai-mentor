@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デイトラちゃん — AIメンター for macOS</title>
+  <meta name="description" content="画面を見ながら、ずんだもんの声で教えてくれるAIメンター。デイトラ受講生向け。">
+  <meta property="og:title" content="デイトラちゃん — AIメンター for macOS">
+  <meta property="og:description" content="画面を見ながら、ずんだもんの声で教えてくれるAIメンター">
+  <meta property="og:image" content="https://showheyohtaki.github.io/daily-trial-ai-mentor/assets/daytora-chan-og.png">
+  <meta property="og:url" content="https://showheyohtaki.github.io/daily-trial-ai-mentor/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --color-text: rgba(0,0,0,0.95);
+      --color-text-secondary: #615d59;
+      --color-text-muted: #a39e98;
+      --color-bg: #ffffff;
+      --color-bg-warm: #f6f5f4;
+      --color-bg-dark: #31302e;
+      --color-accent: #9332f1;
+      --color-accent-active: #7c2bd9;
+      --color-badge-bg: #f3ecfe;
+      --color-badge-text: #7c2bd9;
+      --border-whisper: 1px solid rgba(0,0,0,0.1);
+      --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.84688px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04062px;
+      --radius-card: 12px;
+      --radius-pill: 9999px;
+      --font: 'Inter', -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: var(--border-whisper);
+      z-index: 100;
+    }
+    .nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--color-text);
+    }
+    .nav-brand img { width: 28px; height: 28px; }
+    .nav-brand span { font-size: 15px; font-weight: 600; }
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-github:hover { color: var(--color-text); }
+    .nav-github svg { width: 20px; height: 20px; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 100px 0 80px;
+      text-align: center;
+    }
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      z-index: -1;
+      animation: drift 16s ease-in-out infinite alternate;
+    }
+    .hero-orb-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, #9332f1, transparent 70%);
+      top: -200px; right: -100px;
+    }
+    .hero-orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #ff64c8, transparent 70%);
+      bottom: -100px; left: -50px;
+      animation-delay: -8s;
+    }
+    .hero-orb-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #c084fc, transparent 70%);
+      top: 50%; left: 60%;
+      animation-delay: -4s;
+    }
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -20px) scale(1.05); }
+    }
+
+    .hero-icon {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 32px;
+      filter: drop-shadow(0 4px 24px rgba(147,50,241,0.2));
+    }
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      max-width: 540px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-accent);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 4px 14px rgba(147,50,241,0.3);
+    }
+    .hero-cta:hover {
+      background: var(--color-accent-active);
+      transform: translateY(-1px);
+    }
+    .hero-cta svg { width: 18px; height: 18px; }
+    .hero-meta {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+
+    /* ── Section ── */
+    .section {
+      padding: 80px 0;
+    }
+    .section-warm {
+      background: var(--color-bg-warm);
+    }
+    .section-title {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--color-bg);
+      border: var(--border-whisper);
+      border-radius: var(--radius-card);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: rgba(0,0,0,0.06) 0px 8px 28px, rgba(0,0,0,0.04) 0px 4px 12px;
+    }
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.25px;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Steps ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .step {
+      text-align: center;
+    }
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--color-accent);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: var(--radius-pill);
+      margin-bottom: 16px;
+    }
+    .step h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step p {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+    .step a {
+      color: var(--color-accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .step a:hover { text-decoration: underline; }
+
+    /* ── Requirements ── */
+    .requirements {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .requirements li {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+      padding: 8px 0;
+      list-style: none;
+      border-bottom: var(--border-whisper);
+    }
+    .requirements li:last-child { border-bottom: none; }
+    .requirements li::before {
+      content: "✓";
+      color: var(--color-accent);
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--color-bg-dark);
+      color: var(--color-text-muted);
+      padding: 48px 0;
+      text-align: center;
+      font-size: 13px;
+      line-height: 2;
+    }
+    .footer a {
+      color: #a39e98;
+      text-decoration: none;
+    }
+    .footer a:hover { color: #fff; }
+    .footer-credit {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero { padding: 64px 0 48px; }
+      .hero h1 { font-size: 32px; letter-spacing: -1px; }
+      .hero-sub { font-size: 16px; }
+      .hero-icon { width: 100px; height: 100px; }
+      .section { padding: 56px 0; }
+      .section-title { font-size: 28px; margin-bottom: 32px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-brand">
+        <img src="assets/daytora-chan.svg" alt="デイトラちゃん">
+        <span>デイトラちゃん</span>
+      </a>
+      <a href="https://github.com/showheyohtaki/daily-trial-ai-mentor" class="nav-github" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="container">
+      <img src="assets/daytora-chan.svg" alt="デイトラちゃん" class="hero-icon">
+      <h1>画面を見ながら、<br>声で教えてくれるAIメンター</h1>
+      <p class="hero-sub">デイトラの学習をずんだもんの声でサポート。macOSメニューバーに常駐して、いつでも質問できます。</p>
+      <a href="https://github.com/showheyohtaki/daily-trial-ai-mentor/releases/download/v1.0/DaytoraAIMentor.dmg" class="hero-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        無料でダウンロード
+      </a>
+      <p class="hero-meta">macOS 14.2以上 — 約150MB</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section section-warm">
+    <div class="container">
+      <h2 class="section-title">できること</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🖥️</div>
+          <h3>画面解析</h3>
+          <p>画面を見て状況を理解。エラーもコードも、あなたが見ているものを全て把握します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎙️</div>
+          <h3>音声で質問</h3>
+          <p>キーボードから手を離さず、話しかけるだけ。ずんだもんの声で答えてくれます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👆</div>
+          <h3>ポインティング</h3>
+          <p>「ここをクリックして」と、画面上の要素を直接指し示して説明します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3>会話ログ</h3>
+          <p>対話の履歴をテキストで確認できます。聞き逃しても安心です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">3ステップで始められます</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-badge">1</div>
+          <h3>インストール</h3>
+          <p>DMGを開いてアプリをApplicationsにドラッグ。初回起動は右クリック→「開く」で起動できます。</p>
+        </div>
+        <div class="step">
+          <div class="step-badge">2</div>
+          <h3>APIキーを入力</h3>
+          <p>Anthropic ConsoleでAPIキーを取得し、アプリに入力します。</p>
+          <a href="https://console.anthropic.com" target="_blank" rel="noopener">APIキーを取得 →</a>
+        </div>
+        <div class="step">
+          <div class="step-badge">3</div>
+          <h3>話しかける</h3>
+          <p>Control+Optionキーを長押しして質問。画面を見ながら答えてくれます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Requirements -->
+  <section class="section section-warm">
+    <div class="container">
+      <h2 class="section-title">動作環境</h2>
+      <ul class="requirements">
+        <li>macOS 14.2（Sonoma）以上</li>
+        <li>Anthropic APIキーが必要（従量課金）</li>
+        <li>Apple Silicon / Intel Mac 対応</li>
+        <li>マイク・画面収録・アクセシビリティの権限が必要</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <a href="https://github.com/showheyohtaki/daily-trial-ai-mentor" target="_blank" rel="noopener">GitHub</a>
+      <br>
+      <span>VOICEVOX:ずんだもん</span>
+      <div class="footer-credit">
+        Based on <a href="https://github.com/farzaa/clicky" target="_blank" rel="noopener">Clicky</a> by Farza — MIT License
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
