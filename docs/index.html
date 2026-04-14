@@ -449,8 +449,8 @@
       <div style="background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: rgba(0,0,0,0.04) 0px 4px 18px;">
         <div style="display: flex; gap: 32px; align-items: center; flex-wrap: wrap;">
           <div style="display: flex; flex-direction: column; gap: 12px;">
-            <img src="assets/gatekeeper-warning.png" alt="macOS警告ダイアログ" style="width: 260px; border-radius: 8px;">
-            <img src="assets/gatekeeper-settings.png" alt="システム設定でこのまま開く" style="width: 260px; border-radius: 8px;">
+            <img src="assets/gatekeeper-warning.png" alt="macOS警告ダイアログ" style="width: 260px; border-radius: 8px; cursor: pointer;" onclick="this.style.position=this.style.position==='fixed'?'':'fixed';this.style.top='50%';this.style.left='50%';this.style.transform=this.style.transform==='translate(-50%,-50%) scale(1)'?'':'translate(-50%,-50%) scale(1)';this.style.width=this.style.width==='80vw'?'260px':'80vw';this.style.maxHeight='90vh';this.style.objectFit='contain';this.style.zIndex=this.style.zIndex==='9999'?'':'9999';this.style.borderRadius='12px';this.style.boxShadow=this.style.boxShadow==='0 0 60px rgba(0,0,0,0.5)'?'':'0 0 60px rgba(0,0,0,0.5)';">
+            <img src="assets/gatekeeper-settings.png" alt="システム設定でこのまま開く" style="width: 260px; border-radius: 8px; cursor: pointer;" onclick="this.style.position=this.style.position==='fixed'?'':'fixed';this.style.top='50%';this.style.left='50%';this.style.transform=this.style.transform==='translate(-50%,-50%) scale(1)'?'':'translate(-50%,-50%) scale(1)';this.style.width=this.style.width==='80vw'?'260px':'80vw';this.style.maxHeight='90vh';this.style.objectFit='contain';this.style.zIndex=this.style.zIndex==='9999'?'':'9999';this.style.borderRadius='12px';this.style.boxShadow=this.style.boxShadow==='0 0 60px rgba(0,0,0,0.5)'?'':'0 0 60px rgba(0,0,0,0.5)';">
           </div>
           <div style="flex: 1; min-width: 260px;">
             <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px;">初回起動時の警告について</h3>
@@ -460,7 +460,7 @@
             <ol style="font-size: 16px; color: var(--color-text-secondary); line-height: 2.2; padding-left: 20px; margin: 0;">
               <li>「<strong>完了</strong>」をクリック（ゴミ箱に入れない）</li>
               <li><strong>システム設定 → プライバシーとセキュリティ</strong> を開く</li>
-              <li>「<strong>このまま開く</strong>」をクリック</li>
+              <li>一番下までスクロールして「<strong>このまま開く</strong>」をクリック</li>
             </ol>
             <p style="font-size: 14px; color: var(--color-text-muted); margin-top: 10px;">※ 初回のみ。2回目以降は通常通り起動できます。</p>
           </div>
