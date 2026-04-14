@@ -335,6 +335,31 @@
       transform: scale(1);
     }
 
+    /* ── Lightbox ── */
+    #lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+    }
+    #lightbox-overlay.active { display: flex; }
+    #lightbox-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+    .zoomable-img { cursor: pointer; }
+    .zoom-hint {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .hero { padding: 64px 0 48px; }
@@ -449,8 +474,9 @@
       <div style="background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: rgba(0,0,0,0.04) 0px 4px 18px;">
         <div style="display: flex; gap: 32px; align-items: center; flex-wrap: wrap;">
           <div style="display: flex; flex-direction: column; gap: 12px;">
-            <img src="assets/gatekeeper-warning.png" alt="macOS警告ダイアログ" style="width: 260px; border-radius: 8px; cursor: pointer;" onclick="this.style.position=this.style.position==='fixed'?'':'fixed';this.style.top='50%';this.style.left='50%';this.style.transform=this.style.transform==='translate(-50%,-50%) scale(1)'?'':'translate(-50%,-50%) scale(1)';this.style.width=this.style.width==='80vw'?'260px':'80vw';this.style.maxHeight='90vh';this.style.objectFit='contain';this.style.zIndex=this.style.zIndex==='9999'?'':'9999';this.style.borderRadius='12px';this.style.boxShadow=this.style.boxShadow==='0 0 60px rgba(0,0,0,0.5)'?'':'0 0 60px rgba(0,0,0,0.5)';">
-            <img src="assets/gatekeeper-settings.png" alt="システム設定でこのまま開く" style="width: 260px; border-radius: 8px; cursor: pointer;" onclick="this.style.position=this.style.position==='fixed'?'':'fixed';this.style.top='50%';this.style.left='50%';this.style.transform=this.style.transform==='translate(-50%,-50%) scale(1)'?'':'translate(-50%,-50%) scale(1)';this.style.width=this.style.width==='80vw'?'260px':'80vw';this.style.maxHeight='90vh';this.style.objectFit='contain';this.style.zIndex=this.style.zIndex==='9999'?'':'9999';this.style.borderRadius='12px';this.style.boxShadow=this.style.boxShadow==='0 0 60px rgba(0,0,0,0.5)'?'':'0 0 60px rgba(0,0,0,0.5)';">
+            <img src="assets/gatekeeper-warning.png" alt="macOS警告ダイアログ" class="zoomable-img" style="width: 260px; border-radius: 8px; cursor: pointer;">
+            <img src="assets/gatekeeper-settings.png" alt="システム設定でこのまま開く" class="zoomable-img" style="width: 260px; border-radius: 8px; cursor: pointer;">
+            <p class="zoom-hint">※ 画像クリックで拡大できます</p>
           </div>
           <div style="flex: 1; min-width: 260px;">
             <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px;">初回起動時の警告について</h3>
@@ -652,8 +678,18 @@
     // Start after page load
     setTimeout(runAnimation, 1000);
   })();
+
+  // Lightbox
+  document.querySelectorAll('.zoomable-img').forEach(function(img) {
+    img.addEventListener('click', function() {
+      var overlay = document.getElementById('lightbox-overlay');
+      document.getElementById('lightbox-img').src = this.src;
+      overlay.classList.add('active');
+    });
+  });
   </script>
 
+  <div id="lightbox-overlay" onclick="this.classList.remove('active')"><img id="lightbox-img" src="" alt=""></div>
 </div>
 </body>
 </html>
