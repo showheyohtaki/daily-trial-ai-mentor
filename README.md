@@ -4,7 +4,7 @@
 
 macOSメニューバーに常駐して、Control+Optionキーを長押しするだけで質問できます。プログラミング、デザイン、ライティング、語学——ジャンルを問わず、今見ている画面の内容を理解して答えてくれます。
 
-<video src="https://github.com/showheyohtaki/daily-trial-ai-mentor/releases/download/v1.0/demo.mp4" autoplay loop muted playsinline></video>
+https://github.com/user-attachments/assets/d7eb402c-6ab6-4504-8838-91dd29df1048
 
 ### こんな使い方ができます
 
