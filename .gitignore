@@ -1,0 +1,11 @@
+worker/node_modules/
+worker/.dev.vars
+.DS_Store
+*.xcuserstate
+build/
+releases/
+.claude/
+coding-plans/
+
+# Bundled VOICEVOX engine (too large for git — ~290MB)
+vv-engine/

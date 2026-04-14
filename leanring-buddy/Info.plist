@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>画面の内容を見て質問に答えるために、画面収録のアクセスが必要です。</string>
+	<key>VoiceTranscriptionProvider</key>
+	<string>apple</string>
+</dict>
+</plist>
