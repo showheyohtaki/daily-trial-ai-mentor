@@ -88,16 +88,21 @@
     /* ── Hero ── */
     .hero {
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       padding: 100px 0 80px;
       text-align: center;
+    }
+    .hero-orb-wrapper {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+      z-index: -1;
     }
     .hero-orb {
       position: absolute;
       border-radius: 50%;
       filter: blur(120px);
       opacity: 0.18;
-      z-index: -1;
       animation: drift 16s ease-in-out infinite alternate;
     }
     .hero-orb-1 {
@@ -295,6 +300,36 @@
       border-top: 1px solid rgba(255,255,255,0.1);
     }
 
+    /* ── Buddy Animation ── */
+    #buddy {
+      position: absolute;
+      z-index: 200;
+      pointer-events: none;
+      transition: top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1);
+      filter: drop-shadow(0 2px 8px rgba(147,50,241,0.25));
+    }
+    #buddy img { width: 36px; height: 36px; }
+    #buddy-bubble {
+      position: absolute;
+      z-index: 201;
+      pointer-events: none;
+      background: var(--color-accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.3s, transform 0.3s, top 0.8s cubic-bezier(.34,1.56,.64,1), left 0.8s cubic-bezier(.34,1.56,.64,1);
+      box-shadow: 0 4px 14px rgba(147,50,241,0.3);
+    }
+    #buddy-bubble.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .hero { padding: 64px 0 48px; }
@@ -325,10 +360,14 @@
   </nav>
 
   <!-- Hero -->
-  <section class="hero">
-    <div class="hero-orb hero-orb-1"></div>
-    <div class="hero-orb hero-orb-2"></div>
-    <div class="hero-orb hero-orb-3"></div>
+  <section class="hero" id="hero-section">
+    <div class="hero-orb-wrapper">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+    </div>
+    <div id="buddy" style="top: 80px; left: calc(100% + 50px);"><img src="assets/daytora-chan.svg" alt=""></div>
+    <div id="buddy-bubble"></div>
     <div class="container">
       <img src="assets/daytora-chan.svg" alt="デイトラちゃん" class="hero-icon">
       <h1>画面を見ながら、<br>声で教えてくれるAIメンター</h1>
@@ -341,37 +380,30 @@
     </div>
   </section>
 
-  <!-- Demo Video -->
-  <section class="section">
-    <div class="container" style="max-width: 800px;">
-      <video src="https://github.com/showheyohtaki/daily-trial-ai-mentor/releases/download/v1.0/demo.mp4" autoplay loop muted playsinline style="width: 100%; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); box-shadow: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.84688px;"></video>
-    </div>
-  </section>
-
   <!-- Features -->
   <section class="section section-warm">
     <div class="container">
-      <h2 class="section-title">できること</h2>
+      <h2 class="section-title">主な機能</h2>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon">🖥️</div>
           <h3>画面解析</h3>
-          <p>画面を見て状況を理解。エラーもコードも、あなたが見ているものを全て把握します。</p>
+          <p>画面を見て状況を理解。エラーもコードもデザインも把握します。</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🎙️</div>
-          <h3>音声で質問</h3>
-          <p>キーボードから手を離さず、話しかけるだけ。キャラクターボイスで答えてくれます。</p>
+          <h3>音声対話</h3>
+          <p>話しかけるだけで質問。キャラクターボイスで回答してくれます。</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">👆</div>
           <h3>ポインティング</h3>
-          <p>「ここをクリックして」と、画面上の要素を直接指し示して説明します。</p>
+          <p>画面上の要素を直接指し示して説明します。</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📝</div>
           <h3>会話ログ</h3>
-          <p>対話の履歴をテキストで確認できます。聞き逃しても安心です。</p>
+          <p>対話履歴をテキストで確認できます。</p>
         </div>
       </div>
     </div>
@@ -426,6 +458,145 @@
       </div>
     </div>
   </footer>
+
+  <script>
+  (function() {
+    const buddy = document.getElementById('buddy');
+    const bubble = document.getElementById('buddy-bubble');
+    if (!buddy || !bubble) return;
+
+    const hero = document.getElementById('hero-section');
+
+    // Helper: get element center relative to hero section
+    function center(el) {
+      const hr = hero.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      return { x: r.left - hr.left + r.width / 2, y: r.top - hr.top + r.height / 2 };
+    }
+
+    function moveTo(x, y) {
+      buddy.style.left = x + 'px';
+      buddy.style.top = y + 'px';
+    }
+
+    function showBubble(text, x, y) {
+      bubble.textContent = text;
+      bubble.style.left = (x + 44) + 'px';
+      bubble.style.top = (y - 8) + 'px';
+      bubble.classList.add('visible');
+    }
+
+    function hideBubble() {
+      bubble.classList.remove('visible');
+    }
+
+    // Animation keyframes
+    const heroIcon = document.querySelector('.hero-icon');
+    const heroH1 = document.querySelector('.hero h1');
+    const heroSub = document.querySelector('.hero-sub');
+    const ctaBtn = document.querySelector('.hero-cta');
+
+    const steps = [
+      // 0: Ensure off-screen right
+      { delay: 0, fn() {
+        buddy.style.transition = 'none';
+        moveTo(hero.offsetWidth + 50, 80);
+        // Re-enable transition after position is set
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            buddy.style.transition = '';
+          });
+        });
+      }},
+      // 0.5: Fly into view
+      { delay: 500, fn() {
+        const hw = hero.offsetWidth;
+        moveTo(hw * 0.72, 40);
+      }},
+      // 1: Greeting
+      { delay: 1200, fn() {
+        const hw = hero.offsetWidth;
+        showBubble('やあ! ぼくはデイトラちゃん!', hw * 0.72, 40);
+      }},
+      // 2: Fly to own icon
+      { delay: 4000, fn() {
+        hideBubble();
+        const p = center(heroIcon);
+        moveTo(p.x + 80, p.y - 10);
+      }},
+      // 3: Comment on self
+      { delay: 5500, fn() {
+        const p = center(heroIcon);
+        showBubble('これがぼく! かっこいいでしょ', p.x + 80, p.y - 10);
+      }},
+      // 4: Fly to headline
+      { delay: 8500, fn() {
+        hideBubble();
+        const p = center(heroH1);
+        moveTo(p.x + 240, p.y - 20);
+      }},
+      // 5: Point at headline
+      { delay: 10000, fn() {
+        const p = center(heroH1);
+        showBubble('画面を見ながら声で教えるよ!', p.x + 240, p.y - 20);
+      }},
+      // 6: Fly to subtext
+      { delay: 13000, fn() {
+        hideBubble();
+        const p = center(heroSub);
+        moveTo(p.x + 200, p.y);
+      }},
+      // 7: Point at subtext
+      { delay: 14500, fn() {
+        const p = center(heroSub);
+        showBubble('どんなジャンルでもOK!', p.x + 200, p.y);
+      }},
+      // 8: Fly to CTA
+      { delay: 17500, fn() {
+        hideBubble();
+        const p = center(ctaBtn);
+        moveTo(p.x + 120, p.y - 10);
+      }},
+      // 9: Point at download button
+      { delay: 19000, fn() {
+        const p = center(ctaBtn);
+        showBubble('ここからダウンロードしてね!', p.x + 120, p.y - 10);
+      }},
+      // 10: Fly back to icon
+      { delay: 22000, fn() {
+        hideBubble();
+        const p = center(heroIcon);
+        moveTo(p.x + 70, p.y - 40);
+      }},
+      // 11: Final message
+      { delay: 23500, fn() {
+        const p = center(heroIcon);
+        showBubble('Ctrl+Optionで話しかけてみてね!', p.x + 70, p.y - 40);
+      }},
+      // 12: Hide bubble
+      { delay: 27000, fn() {
+        hideBubble();
+      }},
+      // 13: Exit off-screen right
+      { delay: 28000, fn() {
+        moveTo(hero.offsetWidth + 50, 80);
+      }},
+      // 14: Restart loop after 5s pause
+      { delay: 33000, fn() {
+        runAnimation();
+      }},
+    ];
+
+    function runAnimation() {
+      steps.forEach(step => {
+        setTimeout(step.fn, step.delay);
+      });
+    }
+
+    // Start after page load
+    setTimeout(runAnimation, 1000);
+  })();
+  </script>
 
 </body>
 </html>
