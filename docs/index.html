@@ -412,12 +412,12 @@
   <!-- Steps -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title">3ステップで始められます</h2>
+      <h2 class="section-title">セットアップ</h2>
       <div class="steps-grid">
         <div class="step">
           <div class="step-badge">1</div>
           <h3>インストール</h3>
-          <p>DMGを開いてアプリをApplicationsにドラッグ。初回起動は右クリック→「開く」で起動できます。</p>
+          <p>DMGを開いてアプリをApplicationsにドラッグ。</p>
         </div>
         <div class="step">
           <div class="step-badge">2</div>
@@ -429,6 +429,27 @@
           <div class="step-badge">3</div>
           <h3>話しかける</h3>
           <p>Control+Optionキーを長押しして質問。画面を見ながら答えてくれます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gatekeeper Notice -->
+  <section class="section section-warm">
+    <div class="container" style="max-width: 720px;">
+      <h2 class="section-title">初回起動時の注意</h2>
+      <div style="display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap;">
+        <img src="assets/gatekeeper-warning.png" alt="macOS警告ダイアログ" style="width: 240px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); box-shadow: rgba(0,0,0,0.04) 0px 4px 18px;">
+        <div style="flex: 1; min-width: 280px;">
+          <p style="font-size: 15px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px;">
+            初回起動時にこの警告が表示されますが、Apple認証（公証）を受けていないアプリのため表示されるもので、問題ありません。以下の手順で開けます。
+          </p>
+          <ol style="font-size: 14px; color: var(--color-text-secondary); line-height: 2; padding-left: 20px;">
+            <li>「<strong>完了</strong>」をクリック（ゴミ箱に入れない）</li>
+            <li><strong>システム設定</strong> → <strong>プライバシーとセキュリティ</strong> を開く</li>
+            <li>下にスクロールして「<strong>このまま開く</strong>」をクリック</li>
+          </ol>
+          <p style="font-size: 13px; color: var(--color-text-muted); margin-top: 12px;">※ この操作は初回のみです。2回目以降は通常通り起動できます。</p>
         </div>
       </div>
     </div>
