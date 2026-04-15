@@ -530,13 +530,15 @@
   </section>
 
   <!-- Customization CTA -->
-  <section class="section">
+  <section class="section" id="biz-section" style="position: relative;">
+    <div id="biz-buddy" style="position: absolute; top: 0; left: calc(100% + 50px); pointer-events: none; z-index: 200; transition: top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1); filter: drop-shadow(0 2px 8px rgba(147,50,241,0.25));"><img src="assets/daytora-chan.svg" alt="" style="width: 36px; height: 36px;"></div>
+    <div id="biz-bubble" style="position: absolute; z-index: 201; pointer-events: none; background: var(--color-accent); color: #fff; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: var(--radius-pill); white-space: nowrap; opacity: 0; transform: scale(0.8); transition: opacity 0.3s, transform 0.3s, top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1); box-shadow: 0 4px 14px rgba(147,50,241,0.3);"></div>
     <div class="container" style="max-width: 800px; text-align: center;">
       <h2 class="section-title">御社のシステム専属の<br>AIメンターを作りませんか？</h2>
       <p style="font-size: 15px; color: var(--color-text-secondary); line-height: 1.8; margin-bottom: 32px;">受講生3万人超の学習プラットフォームを開発・運用する株式会社デイトラ（東証グロース上場 エフ・コードグループ）が、AI活用の知見を活かしてカスタマイズします。</p>
       <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;">
         <div style="background: var(--color-bg-warm); border: var(--border-whisper); border-radius: 12px; padding: 20px 24px; flex: 1; min-width: 200px; max-width: 260px;">
-          <p style="font-size: 16px; color: var(--color-text); line-height: 1.7;">Salesforceの操作で<br>毎回同じ質問をされる</p>
+          <p style="font-size: 16px; color: var(--color-text); line-height: 1.7;">社内システムの操作で<br>毎回同じ質問をされる</p>
         </div>
         <div style="background: var(--color-bg-warm); border: var(--border-whisper); border-radius: 12px; padding: 20px 24px; flex: 1; min-width: 200px; max-width: 260px;">
           <p style="font-size: 16px; color: var(--color-text); line-height: 1.7;">新人のシステム習得に<br>1ヶ月以上かかる</p>
@@ -546,7 +548,7 @@
         </div>
       </div>
       <p style="font-size: 18px; color: var(--color-text); line-height: 1.8; margin-bottom: 12px;">
-        画面を指差しながら声で操作をガイドするAIメンターに、<br>御社固有のナレッジを教え込みます。
+        画面を指差しながら声で操作をガイドするAIメンターに、<br>御社固有のナレッジを教え込みます。<br>キャラクターも御社仕様にカスタマイズ可能です。
       </p>
       <p style="font-size: 14px; color: var(--color-text-muted); margin-bottom: 24px;">AIメンター以外のAI活用のご相談も歓迎です。</p>
       <a href="https://forms.gle/VsoZumPSptvRm3pt9" target="_blank" rel="noopener" style="display: inline-block; background: var(--color-accent); color: #fff; font-size: 18px; font-weight: 600; padding: 14px 36px; border-radius: var(--radius-pill); text-decoration: none; box-shadow: 0 4px 14px rgba(147,50,241,0.3); transition: background 0.2s;">お気軽にご相談ください</a>
@@ -702,6 +704,66 @@
 
     // Start after page load
     setTimeout(runAnimation, 1000);
+  })();
+
+  // Biz section buddy animation
+  (function() {
+    var bizSection = document.getElementById('biz-section');
+    var bizBuddy = document.getElementById('biz-buddy');
+    var bizBubble = document.getElementById('biz-bubble');
+    if (!bizSection || !bizBuddy || !bizBubble) return;
+
+    var bizCards = bizSection.querySelectorAll('[style*="border-radius: 12px"]');
+    var bizCta = bizSection.querySelector('a[href*="forms.gle"]');
+    var bizAnimated = false;
+
+    function bizCenter(el) {
+      var sr = bizSection.getBoundingClientRect();
+      var r = el.getBoundingClientRect();
+      return { x: r.left - sr.left + r.width / 2, y: r.top - sr.top + r.height / 2 };
+    }
+    function bizMove(x, y) {
+      bizBuddy.style.left = x + 'px';
+      bizBuddy.style.top = y + 'px';
+    }
+    function bizShow(text, x, y) {
+      bizBubble.textContent = text;
+      bizBubble.style.left = (x + 44) + 'px';
+      bizBubble.style.top = (y - 8) + 'px';
+      bizBubble.style.opacity = '1';
+      bizBubble.style.transform = 'scale(1)';
+    }
+    function bizHide() {
+      bizBubble.style.opacity = '0';
+      bizBubble.style.transform = 'scale(0.8)';
+    }
+
+    function runBizAnimation() {
+      var steps = [
+        { delay: 0, fn: function() { bizBuddy.style.transition = 'none'; bizMove(bizSection.offsetWidth + 50, 80); requestAnimationFrame(function(){ requestAnimationFrame(function(){ bizBuddy.style.transition = ''; }); }); }},
+        { delay: 500, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizMove(p.x+130, p.y); } }},
+        { delay: 2000, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizShow('これ、ぼくに任せて!', p.x+130, p.y); } }},
+        { delay: 4500, fn: function() { bizHide(); if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizMove(p.x+130, p.y); } }},
+        { delay: 6000, fn: function() { if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizShow('ぼくがいれば1日目から動けるよ', p.x+130, p.y); } }},
+        { delay: 8500, fn: function() { bizHide(); if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizMove(p.x+130, p.y); } }},
+        { delay: 10000, fn: function() { if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizShow('読まなくてもぼくに聞けばOK!', p.x+130, p.y); } }},
+        { delay: 12500, fn: function() { bizHide(); bizMove(bizSection.offsetWidth * 0.5, 60); }},
+        { delay: 14000, fn: function() { bizShow('ぼくの見た目も御社キャラに変えられるよ', bizSection.offsetWidth * 0.5, 60); }},
+        { delay: 16500, fn: function() { bizHide(); if(bizCta){ var p=bizCenter(bizCta); bizMove(p.x+130, p.y); } }},
+        { delay: 18000, fn: function() { if(bizCta){ var p=bizCenter(bizCta); bizShow('まずは相談してみて!', p.x+130, p.y); } }},
+        { delay: 20500, fn: function() { bizHide(); }},
+        { delay: 21500, fn: function() { bizMove(bizSection.offsetWidth + 50, 80); }},
+      ];
+      steps.forEach(function(s) { setTimeout(s.fn, s.delay); });
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !bizAnimated) {
+        bizAnimated = true;
+        runBizAnimation();
+      }
+    }, { threshold: 0.3 });
+    observer.observe(bizSection);
   })();
 
   // Lightbox
