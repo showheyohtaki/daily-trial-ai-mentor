@@ -738,21 +738,30 @@
       bizBubble.style.transform = 'scale(0.8)';
     }
 
+    var bizCustomText = bizSection.querySelector('p[style*="font-size: 18px"]');
+
     function runBizAnimation() {
       var steps = [
+        // Off-screen start
         { delay: 0, fn: function() { bizBuddy.style.transition = 'none'; bizMove(bizSection.offsetWidth + 50, 80); requestAnimationFrame(function(){ requestAnimationFrame(function(){ bizBuddy.style.transition = ''; }); }); }},
-        { delay: 500, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizMove(p.x+130, p.y); } }},
-        { delay: 2000, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizShow('これ、ぼくに任せて!', p.x+130, p.y); } }},
-        { delay: 4500, fn: function() { bizHide(); if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizMove(p.x+130, p.y); } }},
-        { delay: 6000, fn: function() { if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizShow('ぼくがいれば1日目から動けるよ', p.x+130, p.y); } }},
-        { delay: 8500, fn: function() { bizHide(); if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizMove(p.x+130, p.y); } }},
-        { delay: 10000, fn: function() { if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizShow('読まなくてもぼくに聞けばOK!', p.x+130, p.y); } }},
-        { delay: 12500, fn: function() { bizHide(); bizMove(bizSection.offsetWidth * 0.5, 60); }},
-        { delay: 14000, fn: function() { bizShow('ぼくの見た目も御社キャラに変えられるよ', bizSection.offsetWidth * 0.5, 60); }},
-        { delay: 16500, fn: function() { bizHide(); if(bizCta){ var p=bizCenter(bizCta); bizMove(p.x+130, p.y); } }},
-        { delay: 18000, fn: function() { if(bizCta){ var p=bizCenter(bizCta); bizShow('まずは相談してみて!', p.x+130, p.y); } }},
-        { delay: 20500, fn: function() { bizHide(); }},
-        { delay: 21500, fn: function() { bizMove(bizSection.offsetWidth + 50, 80); }},
+        // Card 1 - above card
+        { delay: 500, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizMove(p.x, p.y - 60); } }},
+        { delay: 2000, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizShow('これ、ぼくに任せて!', p.x, p.y - 60); } }},
+        // Card 2 - above card
+        { delay: 5000, fn: function() { bizHide(); if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizMove(p.x, p.y - 60); } }},
+        { delay: 6500, fn: function() { if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizShow('ぼくがいれば1日目から動けるよ', p.x, p.y - 60); } }},
+        // Card 3 - above card
+        { delay: 9500, fn: function() { bizHide(); if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizMove(p.x, p.y - 60); } }},
+        { delay: 11000, fn: function() { if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizShow('読まなくてもぼくに聞けばOK!', p.x, p.y - 60); } }},
+        // Customize text - right-bottom of the text
+        { delay: 14000, fn: function() { bizHide(); if(bizCustomText){ var p=bizCenter(bizCustomText); bizMove(p.x + 200, p.y + 30); } }},
+        { delay: 15500, fn: function() { if(bizCustomText){ var p=bizCenter(bizCustomText); bizShow('ぼくの見た目も御社キャラに変えられるよ', p.x + 200, p.y + 30); } }},
+        // CTA button - beside
+        { delay: 18500, fn: function() { bizHide(); if(bizCta){ var p=bizCenter(bizCta); bizMove(p.x + 140, p.y); } }},
+        { delay: 20000, fn: function() { if(bizCta){ var p=bizCenter(bizCta); bizShow('まずは気軽に相談してね!', p.x + 140, p.y); } }},
+        // Exit
+        { delay: 23000, fn: function() { bizHide(); }},
+        { delay: 24000, fn: function() { bizMove(bizSection.offsetWidth + 50, 80); }},
       ];
       steps.forEach(function(s) { setTimeout(s.fn, s.delay); });
     }
