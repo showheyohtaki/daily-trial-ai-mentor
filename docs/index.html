@@ -531,7 +531,7 @@
 
   <!-- Customization CTA -->
   <section class="section" id="biz-section" style="position: relative;">
-    <div id="biz-buddy" style="position: absolute; top: 0; left: calc(100% + 50px); pointer-events: none; z-index: 200; transition: top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1); filter: drop-shadow(0 2px 8px rgba(147,50,241,0.25));"><img src="assets/daytora-chan.svg" alt="" style="width: 36px; height: 36px;"></div>
+    <div id="biz-buddy" style="position: absolute; top: 40px; left: 50%; pointer-events: none; z-index: 200; opacity: 0; transition: top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1), opacity 0.5s; filter: drop-shadow(0 2px 8px rgba(147,50,241,0.25));"><img src="assets/daytora-chan.svg" alt="" style="width: 36px; height: 36px;"></div>
     <div id="biz-bubble" style="position: absolute; z-index: 201; pointer-events: none; background: var(--color-accent); color: #fff; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: var(--radius-pill); white-space: nowrap; opacity: 0; transform: scale(0.8); transition: opacity 0.3s, transform 0.3s, top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1); box-shadow: 0 4px 14px rgba(147,50,241,0.3);"></div>
     <div class="container" style="max-width: 800px; text-align: center;">
       <h2 class="section-title">御社のシステム専属の<br>AIメンターを作りませんか？</h2>
@@ -739,29 +739,51 @@
     }
 
     var bizCustomText = bizSection.querySelector('p[style*="font-size: 18px"]');
+    var bizTitle = bizSection.querySelector('.section-title');
 
     function runBizAnimation() {
       var steps = [
-        // Off-screen start
-        { delay: 0, fn: function() { bizBuddy.style.transition = 'none'; bizMove(bizSection.offsetWidth + 50, 80); requestAnimationFrame(function(){ requestAnimationFrame(function(){ bizBuddy.style.transition = ''; }); }); }},
-        // Card 1 - above card
-        { delay: 500, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizMove(p.x, p.y - 60); } }},
-        { delay: 2000, fn: function() { if(bizCards[0]){ var p=bizCenter(bizCards[0]); bizShow('これ、ぼくに任せて!', p.x, p.y - 60); } }},
-        // Card 2 - above card
-        { delay: 5000, fn: function() { bizHide(); if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizMove(p.x, p.y - 60); } }},
-        { delay: 6500, fn: function() { if(bizCards[1]){ var p=bizCenter(bizCards[1]); bizShow('ぼくがいれば1日目から動けるよ', p.x, p.y - 60); } }},
-        // Card 3 - above card
-        { delay: 9500, fn: function() { bizHide(); if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizMove(p.x, p.y - 60); } }},
-        { delay: 11000, fn: function() { if(bizCards[2]){ var p=bizCenter(bizCards[2]); bizShow('読まなくてもぼくに聞けばOK!', p.x, p.y - 60); } }},
-        // Customize text - right-bottom of the text
-        { delay: 14000, fn: function() { bizHide(); if(bizCustomText){ var p=bizCenter(bizCustomText); bizMove(p.x + 200, p.y + 30); } }},
-        { delay: 15500, fn: function() { if(bizCustomText){ var p=bizCenter(bizCustomText); bizShow('ぼくの見た目も御社キャラに変えられるよ', p.x + 200, p.y + 30); } }},
-        // CTA button - beside
-        { delay: 18500, fn: function() { bizHide(); if(bizCta){ var p=bizCenter(bizCta); bizMove(p.x + 140, p.y); } }},
-        { delay: 20000, fn: function() { if(bizCta){ var p=bizCenter(bizCta); bizShow('まずは気軽に相談してね!', p.x + 140, p.y); } }},
-        // Exit
-        { delay: 23000, fn: function() { bizHide(); }},
-        { delay: 24000, fn: function() { bizMove(bizSection.offsetWidth + 50, 80); }},
+        // Appear at title center
+        { delay: 0, fn: function() {
+          var t = bizCenter(bizTitle);
+          bizBuddy.style.transition = 'none';
+          bizMove(t.x, t.y - 50);
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){
+            bizBuddy.style.transition = 'top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1), opacity 0.5s';
+            bizBuddy.style.opacity = '1';
+          }); });
+        }},
+        // Card 1 - above card, at text start position (left-aligned)
+        { delay: 1500, fn: function() { if(bizCards[0]){ var r=bizCards[0].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizMove(r.left - sr.left + 20, r.top - sr.top - 50); } }},
+        { delay: 3000, fn: function() { if(bizCards[0]){ var r=bizCards[0].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizShow('これ、ぼくに任せて!', r.left - sr.left + 20, r.top - sr.top - 50); } }},
+        // Card 2
+        { delay: 6000, fn: function() { bizHide(); if(bizCards[1]){ var r=bizCards[1].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizMove(r.left - sr.left + 20, r.top - sr.top - 50); } }},
+        { delay: 7500, fn: function() { if(bizCards[1]){ var r=bizCards[1].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizShow('ぼくがいれば1日目から動けるよ', r.left - sr.left + 20, r.top - sr.top - 50); } }},
+        // Card 3
+        { delay: 10500, fn: function() { bizHide(); if(bizCards[2]){ var r=bizCards[2].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizMove(r.left - sr.left + 20, r.top - sr.top - 50); } }},
+        { delay: 12000, fn: function() { if(bizCards[2]){ var r=bizCards[2].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizShow('読まなくてもぼくに聞けばOK!', r.left - sr.left + 20, r.top - sr.top - 50); } }},
+        // Customize text - right-bottom
+        { delay: 15000, fn: function() { bizHide(); if(bizCustomText){ var p=bizCenter(bizCustomText); bizMove(p.x + 220, p.y + 24); } }},
+        { delay: 16500, fn: function() { if(bizCustomText){ var p=bizCenter(bizCustomText); bizShow('ぼくの見た目も御社キャラに変えられるよ', p.x + 220, p.y + 24); } }},
+        // CTA button - beside, stay forever with float
+        { delay: 19500, fn: function() { bizHide(); if(bizCta){ var p=bizCenter(bizCta); bizMove(p.x + 140, p.y); } }},
+        { delay: 21000, fn: function() {
+          if(bizCta){
+            var p=bizCenter(bizCta);
+            bizShow('まずは気軽に相談してね!', p.x + 140, p.y);
+            // Start floating animation
+            var floatY = p.y;
+            var floatDir = 1;
+            setInterval(function() {
+              floatY += floatDir * 0.3;
+              if(floatY > p.y + 6) floatDir = -1;
+              if(floatY < p.y - 6) floatDir = 1;
+              bizBuddy.style.transition = 'none';
+              bizBuddy.style.top = floatY + 'px';
+              bizBubble.style.top = (floatY - 8) + 'px';
+            }, 50);
+          }
+        }},
       ];
       steps.forEach(function(s) { setTimeout(s.fn, s.delay); });
     }
