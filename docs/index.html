@@ -747,7 +747,7 @@
         { delay: 0, fn: function() {
           var t = bizCenter(bizTitle);
           bizBuddy.style.transition = 'none';
-          bizMove(t.x, t.y - 80);
+          bizMove(t.x + 300, t.y - 20);
           requestAnimationFrame(function(){ requestAnimationFrame(function(){
             bizBuddy.style.transition = 'top 1.4s cubic-bezier(.34,1.2,.64,1), left 1.4s cubic-bezier(.34,1.2,.64,1), opacity 0.5s';
             bizBuddy.style.opacity = '1';
@@ -761,7 +761,7 @@
         { delay: 8500, fn: function() { if(bizCards[1]){ var r=bizCards[1].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizShow('ぼくがいれば1日目から動けるよ', r.left - sr.left + 20, r.top - sr.top - 50); } }},
         // Card 3
         { delay: 12000, fn: function() { bizHide(); if(bizCards[2]){ var r=bizCards[2].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizMove(r.left - sr.left + 20, r.top - sr.top - 50); } }},
-        { delay: 13500, fn: function() { if(bizCards[2]){ var r=bizCards[2].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizShow('読まなくてもぼくに聞けばOK!', r.left - sr.left + 20, r.top - sr.top - 50); } }},
+        { delay: 13500, fn: function() { if(bizCards[2]){ var r=bizCards[2].getBoundingClientRect(); var sr=bizSection.getBoundingClientRect(); bizShow('ぼくに聞けばOK!', r.left - sr.left + 20, r.top - sr.top - 50); } }},
         // Customize text - right-bottom
         { delay: 17000, fn: function() { bizHide(); if(bizCustomText){ var p=bizCenter(bizCustomText); bizMove(p.x + 220, p.y + 24); } }},
         { delay: 18500, fn: function() { if(bizCustomText){ var p=bizCenter(bizCustomText); bizShow('ぼくの見た目も御社キャラに変えられるよ', p.x + 220, p.y + 24); } }},
