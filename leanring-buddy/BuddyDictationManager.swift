@@ -549,16 +549,33 @@ final class BuddyDictationManager: NSObject, ObservableObject {
         let inputNode = audioEngine.inputNode
 
         inputNode.removeTap(onBus: 0)
-        // Pass nil format so the tap uses the node's native hardware format,
-        // avoiding mismatch when the input device sample rate differs from
-        // the default 48kHz (e.g. 24kHz on some audio devices).
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { [weak self] buffer, _ in
             self?.activeTranscriptionSession?.appendAudioBuffer(buffer)
             self?.updateAudioPowerLevel(from: buffer)
         }
 
         audioEngine.prepare()
-        try audioEngine.start()
+
+        do {
+            try audioEngine.start()
+        } catch {
+            // Bluetooth devices may advertise a sample rate (e.g. 24kHz)
+            // that differs from the tap's default 48kHz, causing -10868.
+            // Retry using the hardware's native format.
+            audioEngine.stop()
+            inputNode.removeTap(onBus: 0)
+
+            let hwFormat = inputNode.inputFormat(forBus: 0)
+            guard hwFormat.sampleRate > 0 else { throw error }
+
+            print("⚠️ BuddyDictationManager: retrying with hardware format (\(hwFormat.sampleRate)Hz)")
+            inputNode.installTap(onBus: 0, bufferSize: 1024, format: hwFormat) { [weak self] buffer, _ in
+                self?.activeTranscriptionSession?.appendAudioBuffer(buffer)
+                self?.updateAudioPowerLevel(from: buffer)
+            }
+            audioEngine.prepare()
+            try audioEngine.start()
+        }
     }
 
     private func handleRecognitionError(_ error: Error) {
